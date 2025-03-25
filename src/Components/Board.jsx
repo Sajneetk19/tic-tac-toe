@@ -1,12 +1,15 @@
+import { useState } from "react";
 import Square from "./Square";
 
-export default function Board({ xIsNext, squares, onPlay }) {
-//   const [xIsNext, setXIsNext] = useState(true);
-//   const [squares, setSquares] = useState(Array(9).fill(null));
+export default function Board() {
+  const [xIsNext, setXIsNext] = useState(true);
+  const [squares, setSquares] = useState(Array(9).fill(null));
   
   function handleClick(i) {
     const nextSquares = squares.slice();
-    if (squares[i] || calculateWinner(squares)) {
+    // const nextSquares = [...squares];
+    // const nextSquares = squares;
+    if (calculateWinner(squares) || squares[i]) {
       return;
     }
     if (xIsNext) {
@@ -15,9 +18,9 @@ export default function Board({ xIsNext, squares, onPlay }) {
       nextSquares[i] = "O";
     }
 
-    onPlay(nextSquares);
-    // setSquares(nextSquares);
-    // setXIsNext(!xIsNext);
+    // onPlay(nextSquares);
+    setSquares(nextSquares);
+    setXIsNext(!xIsNext);
  }
 
   const winner = calculateWinner(squares);
@@ -27,10 +30,7 @@ export default function Board({ xIsNext, squares, onPlay }) {
   } else {
     status = "Next player: " + (xIsNext ? "X" : "O");
   }
-  
-console.log(xIsNext)
 
-  ///////////////////
   function calculateWinner(squares) {
     const lines = [
       [0, 1, 2],
@@ -40,20 +40,17 @@ console.log(xIsNext)
       [1, 4, 7],
       [2, 5, 8],
       [0, 4, 8],
-      [2, 4, 6]
+      [2, 4, 6],
     ];
     for (let i = 0; i < lines.length; i++) {
-      const [a, b, c] = lines[1];
+      const [a, b, c] = lines[i];
       if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
         return squares[a];
       }
     }
     return null;
   }
-
-
-
-
+  
   return (
     <>
 
